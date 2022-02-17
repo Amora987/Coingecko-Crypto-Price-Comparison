@@ -10,7 +10,8 @@ Program Description:
     data will be pulled from CoinGecko (https://www.coingecko.com/). The main focus of the program
     is as follows:
         - Allow the user to select a few cryptocurrency exchanges to compare to one another.
-        - Allow the user to select a crpytocurrency of interest.
+        - Allow the user to select a crpytocurrency of interest (to keep it simple, the only coins available
+          will be the ones that can be bought with USD).
         - Display the current and historical prices of the specified crypto within the desired timerange
           and display it in an OHLC (possibly interactive) chart.
         - Provide a Monte Carlo simulation to see the potential risk-return in the short and long term.
