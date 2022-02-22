@@ -1,6 +1,5 @@
 import questionary
 import fire
-import hvplot.pandas
 import matplotlib.pyplot as plt
 from Resources import crypto_data, Monte_Carlo_sim
 
@@ -20,15 +19,6 @@ Program Description:
     Github Link: https://github.com/Amora987/Project-1 
 """
 
-def plot(x, y, title):
-    figure = plt.figure(figsize = (20, 10))
-    plt.plot(x, y, figure = figure)
-    plt.title(title)
-    plt.xlabel("Date")
-    plt.ylabel("Price")
-    plt.show()
-
-
 def main():
     """
     Description:
@@ -36,17 +26,21 @@ def main():
     """
 
     print("Welcome to the Crypto Price Comparison!")
+    print("Select a crypto and we'll compare its price against various exchanges!")
+    print("Currently, we only support crypto to USD pairs.")
     print("We currently support pricing for the following exchanges:")
-    print("  Gemini\n  Coinbase\n  Kraken\n  FTX\n")
+
+    supported_exchanges = crypto_data.get_supported_exchange_names()
+    for exchange in supported_exchanges:
+        print(f"   - {exchange}")
     
-    # get the user to choose a coin
-    availabe_coins = [ "Ethereum", "Bitcoin", "Dogecoin", "Polygon" ]
-    choice = questionary.select(message = "Chose one of the following coins to continue:", choices = availabe_coins).ask()
+    print() # just to print out a newline
+    supported_coins = crypto_data.get_supported_crpyto_names() # get the coins that the user can choose
+    choice = questionary.select(message = "Chose one of the following coins to continue:", choices = supported_coins).ask()
 
     # pass the select coin and get the dataframe of exchange data obtained from the CoinGekco API
-    crypto = choice.lower().replace("polygon", "matic-network")
-    closing_prices_df = crypto_data.get_closing_price(crypto)
-    historical_prices_df = crypto_data.get_historical_data(crypto)
+    closing_prices_df = crypto_data.get_closing_price(choice)
+    historical_prices_df = crypto_data.get_historical_data(choice)
 
     print("\nCurrent Prices:")
     print(closing_prices_df)
@@ -54,8 +48,34 @@ def main():
     print("\nHistorical Data")
     print(historical_prices_df)
 
-    # display the price charts from multiple exchanges for the selected coin 
-    plot(historical_prices_df["Timestamp"], historical_prices_df["Prices"], f"Daily Closing Price For {choice}")
+    # setup the plot the current closing price for each supported exchange
+    last_price = closing_prices_df["Last"]
+    minimum = last_price.min() - (last_price.min() * 0.0025)
+    maximum = last_price.max() + (last_price.max() * 0.0025)
+
+    closing_prices_df.plot(
+        kind = "bar",
+        figsize = (15, 10),
+        x = "Market", xlabel = "Exchange",
+        y = "Last", ylabel = "Closing Prices",
+        ylim = (minimum, maximum),
+        title = f"Current Closing Price For {choice}"
+    ).set_xticklabels(closing_prices_df["Market"], rotation = 0) # rotate the x-axis labels so it is horizontal
+
+
+    # setup the plot to display the price charts from multiple exchanges for the selected coin 
+    historical_prices_df.plot(
+        kind = "line",
+        figsize = (20, 10),
+        x = "Timestamp", xlabel = "Date",
+        y = "Prices", ylabel = "Closing Prices",
+        title = f"Daily Closing Price For {choice}"
+    )
+
+
+    # display the plots
+    plt.show()
+
 
     # perform a short-term Monte Carlo simulation and display the results
 
