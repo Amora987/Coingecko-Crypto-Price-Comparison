@@ -36,6 +36,8 @@ def main():
     choice = questionary.select(message = "Chose one of the following coins to continue:", choices = availabe_coins).ask()
 
     # pass the select coin and get the dataframe of exchange data obtained from the CoinGekco API
+    choice = choice.lower().replace("polygon", "matic-network")
+    
 
     # display the price charts from multiple exchanges for the selected coin 
 
