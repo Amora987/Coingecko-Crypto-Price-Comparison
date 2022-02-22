@@ -1,5 +1,6 @@
 import questionary
 import fire
+import hvplot
 import os
 import sys
 
@@ -17,9 +18,6 @@ Program Description:
         - Provide a Monte Carlo simulation to see the potential risk-return in the short and long term.
 
     Github Link: https://github.com/Amora987/Project-1 
-
-Authors:
-    
 """
 
 
@@ -43,9 +41,12 @@ def main():
 
     # display the price charts from multiple exchanges for the selected coin 
 
+
     # perform a short-term Monte Carlo simulation and display the results
 
+
     # perform a long-term Monte Carlo simulation and display the results
+
 
 
 if __name__ == "__main__":
