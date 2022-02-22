@@ -16,6 +16,8 @@ Program Description:
           and display it in an OHLC (possibly interactive) chart.
         - Provide a Monte Carlo simulation to see the potential risk-return in the short and long term.
 
+    Github Link: https://github.com/Amora987/Project-1 
+
 Authors:
     
 """
