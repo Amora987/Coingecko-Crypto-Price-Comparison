@@ -142,7 +142,7 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 <!-- LICENSE -->
 ## License
 
-SMU FinTech BootCamp 2020
+SMU FinTech BootCamp 2022
 
 ![image](https://user-images.githubusercontent.com/73894280/155252975-944a85fd-2186-4499-8043-2552b660078f.png)
 
