@@ -1,5 +1,6 @@
 import questionary
 import fire
+import pandas as pd
 import matplotlib.pyplot as plt
 from Resources import crypto_data, Monte_Carlo_sim
 
@@ -41,12 +42,19 @@ def main():
     # pass the select coin and get the dataframe of exchange data obtained from the CoinGekco API
     closing_prices_df = crypto_data.get_closing_price(choice)
     historical_prices_df = crypto_data.get_historical_data(choice)
+    historical_prices_df.set_index(keys = "Timestamp", inplace = True)
+
+    # bitcoin will be the benchmark to compare the other coin
+    bitcoin_prices_df = crypto_data.get_historical_data("bitcoin")
+    bitcoin_prices_df.set_index(keys = "Timestamp", inplace = True)
+
+    # merge historical data with bitcoin data
+    historical_prices_df = pd.concat([historical_prices_df, bitcoin_prices_df], axis = 1).dropna()
+    historical_prices_df.columns = pd.MultiIndex.from_tuples([(choice, "Last"), ("Bitcoin", "Last")])
 
     print("\nCurrent Prices:")
     print(closing_prices_df)
 
-    print("\nHistorical Data")
-    print(historical_prices_df)
 
     # setup the plot the current closing price for each supported exchange
     last_price = closing_prices_df["Last"]
@@ -56,8 +64,10 @@ def main():
     closing_prices_df.plot(
         kind = "bar",
         figsize = (15, 10),
-        x = "Market", xlabel = "Exchange",
-        y = "Last", ylabel = "Closing Prices",
+        x = "Market",
+        xlabel = "Exchange",
+        y = "Last",
+        ylabel = "Closing Prices",
         ylim = (minimum, maximum),
         title = f"Current Closing Price For {choice}"
     ).set_xticklabels(closing_prices_df["Market"], rotation = 0) # rotate the x-axis labels so it is horizontal
@@ -67,8 +77,9 @@ def main():
     historical_prices_df.plot(
         kind = "line",
         figsize = (20, 10),
-        x = "Timestamp", xlabel = "Date",
-        y = "Prices", ylabel = "Closing Prices",
+        xlabel = "Date",
+        y = (choice, "Last"),
+        ylabel = "Closing Prices",
         title = f"Daily Closing Price For {choice}"
     )
 
@@ -77,11 +88,14 @@ def main():
     plt.show()
 
 
-    # perform a short-term Monte Carlo simulation and display the results
+    # perform a Monte Carlo simulation and display the results
+    mc = Monte_Carlo_sim.MonteCarloSim(historical_prices_df, [0.6, 0.4])
 
+    print("\nHistorical Data")
+    print(mc.portfolio_data)
+    print(mc.calc_cumulative_return())
 
-    # perform a long-term Monte Carlo simulation and display the results
-
+    # plot Monte Carlo simulation
 
 
 if __name__ == "__main__":
