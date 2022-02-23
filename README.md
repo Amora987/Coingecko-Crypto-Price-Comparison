@@ -105,7 +105,6 @@ Once a coin choice is made, you will see the current price of your slected coin 
 
 ![bitcoin](https://user-images.githubusercontent.com/73894280/155251744-7f6bb775-621a-4cd4-8051-5a38681bd80e.PNG)
 
-_For more examples, please refer to the [Documentation](https://example.com)_
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
