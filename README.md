@@ -13,10 +13,7 @@
 -->
 [![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
-[![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
-[![MIT License][license-shield]][license-url]
-[![LinkedIn][linkedin-shield]][linkedin-url]
 
 ![image](https://user-images.githubusercontent.com/73894280/155249481-167017a4-6d9e-4083-b8c5-8e6873a07e07.png)
 
@@ -164,7 +161,7 @@ Project Link: [https://github.com/Amora987/Project-1.git](https://github.com/Amo
 [contributors-shield]: https://img.shields.io/github/contributors/github_username/repo_name.svg?style=for-the-badge
 [contributors-url]: https://github.com/Amora987/Project-1/graphs/contributors
 [forks-shield]: https://img.shields.io/github/forks/github_username/repo_name.svg?style=for-the-badge
-[forks-url]: https://github.com/github_username/repo_name/network/members
+[forks-url]: https://github.com/Amora987/Project-1/network/members
 [stars-shield]: https://img.shields.io/github/stars/github_username/repo_name.svg?style=for-the-badge
 [stars-url]: https://github.com/github_username/repo_name/stargazers
 [issues-shield]: https://img.shields.io/github/issues/github_username/repo_name.svg?style=for-the-badge
