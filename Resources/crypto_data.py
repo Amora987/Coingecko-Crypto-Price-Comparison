@@ -1,6 +1,5 @@
 import requests
 import pandas as pd
-from sympy import E
 
 
 # The api for getting daily closing prices
@@ -20,33 +19,55 @@ supported_exchanges = {
 
 # a dictionary of supported cryptos
 supported_crpytos = { 
-    "Bitcoin" : "bitcoin", 
     "Ethereum" : "ethereum", 
-    "Dogecoin" : "dogecoin", 
-    "Polygon" : "matic-network" 
+    "Litecoin" : "litecoin", 
+    "Polygon" : "matic-network",
+    "Dogecoin" : "dogecoin"
 }
 
 
 def get_supported_exchange_names():
+    """
+    Description:
+        Returns the names of the supported exchanges.
+    """
     return supported_exchanges.keys()
 
 
 def get_supported_exchange_id(exchange):
+    """
+    Description:
+        Returns the id of the exchange based on the exchange name in the dictionary
+        so that it can be used for the CoinGecko API.
+    """
+
     return supported_exchanges[exchange]
 
 
 def get_supported_crpyto_names():
+    """
+    Description:
+        Returns the names of the supported coins.
+    """
+
     return supported_crpytos.keys()
 
 
 def get_supported_crypto_id(crypto):
+    """
+    Description:
+        Returns the id of the coin based on the exchange name in the dictionary
+        so that it can be used for the CoinGecko API.
+    """
+
     return supported_crpytos[crypto]
 
 
 def get_closing_price(crypto):
     """
     Description:
-        Grabs the current closing price of the specified crypto for each exchange.
+        Grabs the current closing price of the specified crypto for each exchange and
+        returns it to the calling function as a dataframe.
     """
 
     coin_id = get_supported_crypto_id(crypto)
@@ -67,10 +88,12 @@ def get_closing_price(crypto):
 def get_historical_data(crypto, days = 30):
     """
     Description:
-        Grabs the historical data for the specified amount of days.
+        Grabs the historical data for the specified amount of days and returns it to
+        the calling function as a dataframe.
     """
 
-    coin_id = get_supported_crypto_id(crypto)
+    coin_id = get_supported_crypto_id(crypto) if crypto != "bitcoin" else "bitcoin"
+
     daily_data = requests.get(DAILY_MARKET_CHARTS.format(coin_id, days)).json()
     
     timestamp = []
@@ -79,5 +102,4 @@ def get_historical_data(crypto, days = 30):
         timestamp.append(pd.Timestamp(data[0], tz = "America/Chicago", unit = "ms"))
         prices.append(data[1])
 
-    return pd.DataFrame(data = { "Timestamp" : timestamp, "Prices" : prices })
-
+    return pd.DataFrame(data = { "Timestamp" : timestamp, "Last" : prices })
