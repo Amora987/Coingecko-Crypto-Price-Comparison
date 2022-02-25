@@ -136,7 +136,11 @@ class MonteCarloSim:
             
         # Use Pandas plot function to plot the return data
         plot_title = f"{self.nSim} Simulations of Cumulative Portfolio Return Trajectories Over the Next {self.nTrading} Trading Days."
+
+        return self.simulated_return.plot(legend=None,title=plot_title, xlabel=f"Simulated Trading Days ({self.nTrading})", ylabel=f"Cumulative return")
+=======
         return self.simulated_return.plot(legend=None,title=plot_title)
+
     
     def plot_distribution(self):
         """
@@ -151,7 +155,11 @@ class MonteCarloSim:
         # Use the `plot` function to create a probability distribution histogram of simulated ending prices
         # with markings for a 95% confidence interval
         plot_title = f"Distribution of Final Cumuluative Returns Across All {self.nSim} Simulations"
+
+        plt = self.simulated_return.iloc[-1, :].plot(kind='hist', bins=10,density=True,title=plot_title, xlabel='Profit', ylabel='Probability')
+=======
         plt = self.simulated_return.iloc[-1, :].plot(kind='hist', bins=10,density=True,title=plot_title)
+
         plt.axvline(self.confidence_interval.iloc[0], color='r')
         plt.axvline(self.confidence_interval.iloc[1], color='r')
         return plt
@@ -169,4 +177,8 @@ class MonteCarloSim:
         metrics = self.simulated_return.iloc[-1].describe()
         ci_series = self.confidence_interval
         ci_series.index = ["95% CI Lower","95% CI Upper"]
+
         return metrics.append(ci_series)
+=======
+        return metrics.append(ci_series)
+

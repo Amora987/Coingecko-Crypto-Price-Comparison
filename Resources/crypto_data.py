@@ -17,6 +17,13 @@ supported_exchanges = {
     "FTX" : "ftx_spot"
 }
 
+# This list is for the MC Sim
+supported_exchanges_for_invest = {"Gemini": "gemini",
+                                  "Coinbase": "gdax",
+                                  "Kraken": "kraken",
+                                  "FTX": "ftx_spot",
+                                  "Continue": "False"}
+
 # a dictionary of supported cryptos
 supported_crpytos = { 
     "Ethereum" : "ethereum", 
@@ -32,6 +39,13 @@ def get_supported_exchange_names():
         Returns the names of the supported exchanges.
     """
     return supported_exchanges.keys()
+
+def get_supported_exchange_names2():
+    """
+    Description:
+        Returns the names of the supported exchanges.
+    """
+    return supported_exchanges_for_invest
 
 
 def get_supported_exchange_id(exchange):

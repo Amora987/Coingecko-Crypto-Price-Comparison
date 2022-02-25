@@ -34,6 +34,10 @@ def main():
     supported_exchanges = crypto_data.get_supported_exchange_names()
     for exchange in supported_exchanges:
         print(f"   - {exchange}")
+
+    #This is used to pass the choices but with a "Continue" choice at the end
+    supported_exchanges_for_invest = crypto_data.get_supported_exchange_names2()
+
     
     print() # just to print out a newline
     supported_coins = crypto_data.get_supported_crpyto_names() # get the coins that the user can choose
@@ -54,6 +58,46 @@ def main():
 
     print("\nCurrent Prices:")
     print(closing_prices_df)
+    print() # just to print out a newline
+
+    coin = [] #Used for our user choice to purchase from different exchanges
+
+    # This loops through for each exchange. The user MUST click on every exchange and if they don't want to purchase then they MUST enter '0'
+    while coin != "Continue":
+        coin = questionary.select(f"Click on each exchange and decide if you would like to purchase {choice}. ",
+                                  choices=supported_exchanges_for_invest
+                                  ).ask()
+
+        gemini_value = closing_prices_df.at[0, 'Last']
+        gdx_value = closing_prices_df.at[1, 'Last']
+        kraken_value = closing_prices_df.at[2, 'Last']
+        ftx_value = closing_prices_df.at[3, 'Last']
+
+        if coin == 'Gemini':
+            gemini_input = int(
+                input("How many coins do you want to purchase, if none enter '0'? "))
+            portfolio_gemini = gemini_input * gemini_value
+
+        elif coin == 'Coinbase':
+            gdx_input = int(
+                input("How many coins do you want to purchase, if none enter '0'? "))
+            portfolio_gdx = gdx_input * gdx_value
+
+        elif coin == 'Kraken':
+            kraken_input = int(
+                input("How many coins do you want to purchase, if none enter '0'? "))
+            portfolio_kraken = kraken_input * kraken_value
+
+        elif coin == 'FTX':
+            ftx_input = int(
+                input("How many coins do you want to purchase, if none enter '0'? "))
+            portfolio_ftx = ftx_input * ftx_value
+        else:
+            total_portfolio = portfolio_gemini + \
+                portfolio_gdx + portfolio_kraken + portfolio_ftx
+
+    #Prints the amount of worth of the portfolio
+    print(f"\n Total: ${total_portfolio: .2f}\n")
 
 
     # setup the plot the current closing price for each supported exchange
@@ -89,6 +133,25 @@ def main():
 
 
     # perform a Monte Carlo simulation and display the results
+
+    #Choose the weights on the chosen coin
+    w1 = float(input(f"Weighted of {choice}:"))
+    w2 = float(input(f"Weighted of BTC: "))
+
+    #User can decide how many simulations they want to run
+    sim_num = int(input("Number of Simulations you'd like to run: "))
+
+    #User can decide how many years they want to forcast
+    num_yrs = int(input('Number of years you want to simulate: '))
+    
+    mc = Monte_Carlo_sim.MonteCarloSim(historical_prices_df, [
+                                       w1, w2], num_simulation=sim_num, num_trading_days=252 * num_yrs)
+
+
+    print("\nHistorical Data")
+    print(mc.portfolio_data)
+    print(mc.calc_cumulative_return())
+=======
     mc = Monte_Carlo_sim.MonteCarloSim(historical_prices_df, [0.6, 0.4])
 
     print("\nHistorical Data")
@@ -97,6 +160,14 @@ def main():
 
     # plot Monte Carlo simulation
 
+
+    # plot Monte Carlo simulation
+    mc.plot_simulation()
+    plt.show()
+
+    mc.plot_distribution()
+    plt.show()
+    # Had to use the plt function tp display the graphs
 
 if __name__ == "__main__":
     fire.Fire(main)
