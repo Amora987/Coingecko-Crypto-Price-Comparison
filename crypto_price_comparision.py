@@ -133,6 +133,7 @@ def main():
 
 
     # perform a Monte Carlo simulation and display the results
+
     #Choose the weights on the chosen coin
     w1 = float(input(f"Weighted of {choice}:"))
     w2 = float(input(f"Weighted of BTC: "))
@@ -150,6 +151,15 @@ def main():
     print("\nHistorical Data")
     print(mc.portfolio_data)
     print(mc.calc_cumulative_return())
+=======
+    mc = Monte_Carlo_sim.MonteCarloSim(historical_prices_df, [0.6, 0.4])
+
+    print("\nHistorical Data")
+    print(mc.portfolio_data)
+    print(mc.calc_cumulative_return())
+
+    # plot Monte Carlo simulation
+
 
     # plot Monte Carlo simulation
     mc.plot_simulation()
