@@ -133,14 +133,31 @@ def main():
 
 
     # perform a Monte Carlo simulation and display the results
-    mc = Monte_Carlo_sim.MonteCarloSim(historical_prices_df, [0.6, 0.4])
+    #Choose the weights on the chosen coin
+    w1 = float(input(f"Weighted of {choice}:"))
+    w2 = float(input(f"Weighted of BTC: "))
+
+    #User can decide how many simulations they want to run
+    sim_num = int(input("Number of Simulations you'd like to run: "))
+
+    #User can decide how many years they want to forcast
+    num_yrs = int(input('Number of years you want to simulate: '))
+    
+    mc = Monte_Carlo_sim.MonteCarloSim(historical_prices_df, [
+                                       w1, w2], num_simulation=sim_num, num_trading_days=252 * num_yrs)
+
 
     print("\nHistorical Data")
     print(mc.portfolio_data)
     print(mc.calc_cumulative_return())
 
     # plot Monte Carlo simulation
+    mc.plot_simulation()
+    plt.show()
 
+    mc.plot_distribution()
+    plt.show()
+    # Had to use the plt function tp display the graphs
 
 if __name__ == "__main__":
     fire.Fire(main)
